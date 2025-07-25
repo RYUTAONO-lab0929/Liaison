@@ -16,13 +16,15 @@ logging.basicConfig(filename='/home/pi/rp3_to_rp4.log', level=logging.INFO, form
 logging.info('Script started')
 
 # RP3側のHTTPサーバURL (必要に応じて変更してください)
-MP3_URL = "http://100.64.1.25:8000/art01.mp3"  # RP3のIPアドレスに書き換えてください
+MP3_URL = os.environ.get("MP3_URL", "http://127.0.0.1:8000/art01.mp3")
 
 # ダウンロード先のパス (RP4上のパス)
 LOCAL_MP3_FILE = "/home/pi/music/art01.mp3"
 
 # RP3のBluetoothアドレス (固定)
-RP3_BT_ADDRESS = "B8:27:EB:6C:C6:84"
+RP3_BT_ADDRESS = os.environ.get("RP3_BT_ADDRESS")
+if not RP3_BT_ADDRESS:
+    raise ValueError("環境変数 `RP3_BT_ADDRESS` が設定されていません。")
 
 # RSSIしきい値 (環境に合わせて調整が必要)
 BLE_RSSI_THRESHOLD = -40      # 近距離判定 (再生開始)

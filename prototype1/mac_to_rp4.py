@@ -8,13 +8,15 @@ import os
 from bleak import BleakScanner
 
 # Mac側のHTTPサーバURL
-MP3_URL = "http://100.64.1.13:8000/art01.mp3"
+MP3_URL = os.environ.get("MP3_URL", "http://127.0.0.1:8000/art01.mp3")
 
 # ダウンロード先のパス (Raspberry Pi上のパス)
 LOCAL_MP3_FILE = "/home/pi/art01.mp3"
 
 # MacのBluetoothアドレス (必ず変更してください)
-MAC_BT_ADDRESS = "1C:57:DC:45:07:33"  # MacのBTアドレス
+MAC_BT_ADDRESS = os.environ.get("MAC_BT_ADDRESS")
+if not MAC_BT_ADDRESS:
+    raise ValueError("環境変数 `MAC_BT_ADDRESS` が設定されていません。")
 
 # RSSIしきい値 (環境に合わせて調整が必要)
 BLE_RSSI_THRESHOLD = -70      # 近距離判定 (再生開始)
